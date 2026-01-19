@@ -21,6 +21,8 @@ This document explains the organization of the dotfiles repository.
 ├── dot_zprofile.tmpl           # → ~/.zprofile
 ├── dot_gitconfig.tmpl          # → ~/.gitconfig
 ├── dot_hushlogin               # → ~/.hushlogin
+├── dot_tmux.conf               # → ~/.tmux.conf
+├── dot_stignore                # → ~/.stignore (Syncthing)
 │
 ├── private_dot_ssh/            # → ~/.ssh/
 │   └── config.tmpl             # → ~/.ssh/config
@@ -29,7 +31,9 @@ This document explains the organization of the dotfiles repository.
 │   ├── starship/               # Prompt configuration
 │   ├── broot/                  # File manager
 │   ├── btop/                   # System monitor
-│   └── gh/                     # GitHub CLI
+│   ├── gh/                     # GitHub CLI
+│   ├── iterm2/                 # iTerm2 profile (macOS)
+│   └── Code/User/              # VS Code settings
 │
 └── dot_oh-my-zsh/custom/       # → ~/.oh-my-zsh/custom/
     ├── topics/                 # Topic-based shell configs
@@ -99,7 +103,7 @@ Shell configuration is split by topic for maintainability:
 |------|----------|
 | `topics/git.zsh` | Git aliases (`gs`, `ga`, `gc`), functions (`qcommit`, `qpush`) |
 | `topics/python.zsh` | Python/uv aliases, `newpy`, `newfastapi` scaffolding |
-| `topics/node.zsh.tmpl` | fnm setup, npm/pnpm/bun aliases |
+| `topics/node.zsh.tmpl` | fnm setup, npm/pnpm/bun aliases, `newts`, `newnext`, `newvite`, `newexpress` |
 | `topics/docker.zsh` | Docker/compose aliases and functions |
 | `topics/navigation.zsh` | eza/bat/zoxide setup, file utilities |
 | `topics/platform.zsh.tmpl` | Platform-specific settings (macOS/Linux/WSL) |
@@ -205,6 +209,49 @@ System monitor configuration.
 ### `dot_config/gh/`
 
 GitHub CLI settings and aliases.
+
+### `dot_config/iterm2/`
+
+iTerm2 terminal profile (macOS only):
+- `kdash.json` - Custom profile with Fira Code font, light/dark mode colors
+
+### `dot_config/Code/User/`
+
+VS Code configuration:
+- `settings.json` - Editor settings, themes, formatters, language configs
+- `extensions.txt` - Recommended extensions list
+
+Install extensions with:
+```bash
+cat ~/.config/Code/User/extensions.txt | xargs -L 1 code --install-extension
+```
+
+---
+
+## Terminal Multiplexer
+
+### `dot_tmux.conf`
+
+tmux configuration with:
+- Prefix: `Ctrl-a` (like screen)
+- Vim-style pane navigation (`h`, `j`, `k`, `l`)
+- Mouse support enabled
+- Split panes: `|` (vertical), `-` (horizontal)
+- Nord-inspired status bar theme
+- Fast escape time for vim users
+
+---
+
+## File Sync
+
+### `dot_stignore`
+
+Syncthing ignore patterns for:
+- macOS garbage (`.DS_Store`, `._*`, `.Spotlight-V100`)
+- Windows garbage (`Thumbs.db`, `desktop.ini`, `$RECYCLE.BIN`)
+- Linux garbage (`.Trash-*`, `.directory`)
+- Development files (`node_modules/`, `.venv/`, `__pycache__/`)
+- Temporary files (`*.tmp`, `*.bak`, `*.swp`)
 
 ---
 

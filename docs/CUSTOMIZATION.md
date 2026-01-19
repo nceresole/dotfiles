@@ -10,6 +10,7 @@ This guide explains how to customize the dotfiles for your needs.
 - [Creating Topic Files](#creating-topic-files)
 - [Working with Templates](#working-with-templates)
 - [Managing Secrets](#managing-secrets)
+- [Project Scaffolding Functions](#project-scaffolding-functions)
 
 ---
 
@@ -429,6 +430,64 @@ chezmoi re-add --encrypt
 # Replace old key
 mv ~/.config/chezmoi/key-new.txt ~/.config/chezmoi/key.txt
 ```
+
+---
+
+## Project Scaffolding Functions
+
+The dotfiles include ready-to-use functions for creating new projects with common setups.
+
+### Python Projects
+
+| Command | Description |
+|---------|-------------|
+| `newpy <name>` | Create Python project with uv, .venv, and .python-version (3.12) |
+| `newfastapi <name>` | Full FastAPI project with app structure, uvicorn, SQLAlchemy |
+
+**Example:**
+```bash
+newpy myproject
+# Creates: myproject/.venv, pyproject.toml, .python-version (3.12)
+
+newfastapi myapi
+# Creates: myapi/app/{api,models,schemas,services}, main.py, .env
+# Run with: uvicorn app.main:app --reload
+```
+
+### Node.js/TypeScript Projects
+
+| Command | Description |
+|---------|-------------|
+| `newnode <name>` | Basic Node.js project with npm init |
+| `newts <name>` | TypeScript project with tsconfig, nodemon, ts-node |
+| `newnext <name>` | Next.js + TypeScript + Tailwind + App Router |
+| `newvite <name>` | Vite + React + TypeScript |
+| `newexpress <name>` | Express + TypeScript API with cors, dotenv |
+
+**Example:**
+```bash
+newts mylib
+# Creates: mylib/src/index.ts, tsconfig.json, package.json
+# Scripts: npm run dev (nodemon), npm run build (tsc)
+
+newnext myapp
+# Uses create-next-app with --typescript --tailwind --eslint --app --src-dir
+
+newvite mysite
+# Uses Vite's react-ts template
+
+newexpress myapi
+# Creates: myapi/src/index.ts with Express server, routes/, middleware/
+# Includes: cors, dotenv, @types/*, nodemon
+```
+
+### Utility Functions
+
+| Command | Description |
+|---------|-------------|
+| `ncu` | Update all npm packages (uses npm-check-updates) |
+| `nclean` | Remove node_modules and reinstall |
+| `serve [port]` | Quick Python HTTP server (default: 8000) |
 
 ---
 

@@ -70,11 +70,16 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply nceresole
 │
 ├── private_dot_ssh/config.tmpl # SSH config
 │
+├── dot_tmux.conf               # Terminal multiplexer
+├── dot_stignore                # Syncthing ignore patterns
+│
 ├── dot_config/
 │   ├── starship/               # Prompt theming
 │   ├── broot/                  # File manager
 │   ├── btop/                   # System monitor
-│   └── gh/                     # GitHub CLI
+│   ├── gh/                     # GitHub CLI
+│   ├── iterm2/                 # iTerm2 profile (macOS)
+│   └── Code/User/              # VS Code settings
 │
 ├── dot_oh-my-zsh/custom/
 │   ├── topics/                 # Topic-based organization
@@ -171,7 +176,7 @@ Shell configuration is organized by topic for better maintainability:
 |-------|----------|
 | `git.zsh` | Git aliases, qcommit, qpush functions |
 | `python.zsh` | Python/uv aliases, newpy, newfastapi |
-| `node.zsh.tmpl` | fnm setup, npm aliases |
+| `node.zsh.tmpl` | fnm setup, npm/pnpm/bun aliases, newts, newnext, newvite, newexpress |
 | `docker.zsh` | Docker/compose aliases |
 | `navigation.zsh` | eza/bat/zoxide, file utilities |
 | `platform.zsh.tmpl` | macOS/Linux/WSL-specific settings |
@@ -196,6 +201,7 @@ Shell configuration is organized by topic for better maintainability:
 - **uv** - Fast Python package manager
 - **gh** - GitHub CLI
 - **broot** - Terminal file manager
+- **tmux** - Terminal multiplexer (prefix: Ctrl-a, vim keybindings)
 
 ## Troubleshooting
 
