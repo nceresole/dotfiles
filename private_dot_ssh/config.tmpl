@@ -1,0 +1,39 @@
+# SSH Configuration (~/.ssh/config)
+# Managed by chezmoi
+#
+# NEVER commit your private keys (id_rsa, id_ed25519, etc.)
+
+# -----------------------------------------------------------------------------
+# Defaults
+# -----------------------------------------------------------------------------
+Host *
+    # Add keys to ssh-agent automatically
+    AddKeysToAgent yes
+{{- if .is_macos }}
+    # macOS: Use Keychain to store passphrases
+    UseKeychain yes
+{{- end }}
+    # Keep connections alive
+    ServerAliveInterval 60
+    ServerAliveCountMax 3
+
+# -----------------------------------------------------------------------------
+# GitHub
+# -----------------------------------------------------------------------------
+Host github.com
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_github
+
+# -----------------------------------------------------------------------------
+# GitLab
+# -----------------------------------------------------------------------------
+Host gitlab.com
+    HostName gitlab.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_gitlab
+
+# -----------------------------------------------------------------------------
+# Include local SSH config for machine-specific hosts
+# -----------------------------------------------------------------------------
+Include ~/.ssh/config.local

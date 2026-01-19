@@ -1,0 +1,62 @@
+# =============================================================================
+# PATH Modifications
+# Managed by chezmoi
+# =============================================================================
+# NOTE: Order matters! Paths are searched left-to-right
+# Put the most important paths first
+
+# -----------------------------------------------------------------------------
+# User-installed binaries
+# -----------------------------------------------------------------------------
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+
+# -----------------------------------------------------------------------------
+# Homebrew
+# -----------------------------------------------------------------------------
+{{- if .is_macos }}
+if [[ -f "/opt/homebrew/bin/brew" ]]; then
+    export PATH="/opt/homebrew/bin:$PATH"
+    export PATH="/opt/homebrew/sbin:$PATH"
+elif [[ -f "/usr/local/bin/brew" ]]; then
+    export PATH="/usr/local/bin:$PATH"
+    export PATH="/usr/local/sbin:$PATH"
+fi
+{{- else if .is_linux }}
+if [[ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
+    export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+    export PATH="/home/linuxbrew/.linuxbrew/sbin:$PATH"
+fi
+{{- end }}
+
+# -----------------------------------------------------------------------------
+# fnm (Fast Node Manager)
+# -----------------------------------------------------------------------------
+{{- if .is_macos }}
+if [[ -d "$HOME/Library/Application Support/fnm" ]]; then
+    export PATH="$HOME/Library/Application Support/fnm:$PATH"
+fi
+{{- else if .is_linux }}
+if [[ -d "$HOME/.local/share/fnm" ]]; then
+    export PATH="$HOME/.local/share/fnm:$PATH"
+fi
+{{- end }}
+
+# -----------------------------------------------------------------------------
+# Go
+# -----------------------------------------------------------------------------
+if [[ -d "$HOME/go/bin" ]]; then
+    export PATH="$HOME/go/bin:$PATH"
+fi
+
+# -----------------------------------------------------------------------------
+# Custom scripts directory
+# -----------------------------------------------------------------------------
+if [[ -d "$HOME/.local/scripts" ]]; then
+    export PATH="$HOME/.local/scripts:$PATH"
+fi
+
+# Legacy path support
+if [[ -d "$HOME/__HomeDir/1__system/Dotfiles/scripts/macos" ]]; then
+    export PATH="$HOME/__HomeDir/1__system/Dotfiles/scripts/macos:$PATH"
+fi

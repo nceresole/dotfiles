@@ -1,0 +1,22 @@
+# chezmoi source directory gitignore
+
+# Don't commit the chezmoi config (contains personal data)
+.chezmoi.toml
+
+# Age encryption key (NEVER commit this!)
+key.txt
+
+# Temporary files
+*.tmp
+*.bak
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo

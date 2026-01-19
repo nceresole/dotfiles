@@ -1,0 +1,38 @@
+# Files to ignore when applying dotfiles
+
+# README and documentation (not needed in home directory)
+README.md
+LICENSE
+docs/
+
+# Scripts (accessed from source directory)
+scripts/
+
+# Brewfiles (used by run scripts)
+Brewfile
+Brewfile.darwin
+Brewfile.linux
+
+# Editor/IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# chezmoi-specific
+.chezmoiignore
+
+# Platform-specific ignores
+{{- if not (eq .chezmoi.os "darwin") }}
+# Ignore macOS-specific files on non-macOS
+.chezmoiscripts/run_once_after_darwin-defaults.sh.tmpl
+{{- end }}

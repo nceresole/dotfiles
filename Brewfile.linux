@@ -1,0 +1,18 @@
+# =============================================================================
+# Brewfile.linux - Linux/WSL-specific packages
+# Install: brew bundle --file=Brewfile.linux
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Linux-specific CLI tools
+# -----------------------------------------------------------------------------
+brew "keychain"      # SSH key management
+brew "xclip"         # Clipboard manager (X11)
+
+# -----------------------------------------------------------------------------
+# Optional tools for Linux desktop
+# -----------------------------------------------------------------------------
+# brew "xdg-utils"   # Desktop integration utilities
+
+# Note: On Linux, prefer native package managers for GUI apps
+# Use apt/dnf/pacman for desktop applications

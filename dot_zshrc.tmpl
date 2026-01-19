@@ -1,0 +1,150 @@
+# =============================================================================
+# Zsh Configuration
+# Managed by chezmoi
+# =============================================================================
+
+export ZSH="$HOME/.oh-my-zsh"
+source $ZSH/oh-my-zsh.sh
+
+# -----------------------------------------------------------------------------
+# Performance optimizations
+# -----------------------------------------------------------------------------
+DISABLE_AUTO_UPDATE="true"
+DISABLE_MAGIC_FUNCTIONS="true"
+DISABLE_COMPFIX="true"
+
+# OMZ autoupdate reminder
+zstyle ':omz:update' mode reminder
+zstyle ':omz:update' frequency 14
+
+# Timestamps
+HIST_STAMPS="yyyy-mm-dd"
+
+# -----------------------------------------------------------------------------
+# Plugins
+# -----------------------------------------------------------------------------
+source $ZSH/custom/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+source $ZSH/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+{{- if and .is_macos (ne .homebrew_prefix "") }}
+# zsh-autocomplete (Homebrew)
+if [[ -f "{{ .homebrew_prefix }}/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh" ]]; then
+    source {{ .homebrew_prefix }}/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+fi
+{{- else if .is_linux }}
+# zsh-autocomplete (Linux)
+if [[ -f "/usr/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh" ]]; then
+    source /usr/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+fi
+{{- end }}
+
+plugins=(git docker)
+
+# zsh-autosuggestions settings
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=cyan'
+ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE="20"
+ZSH_AUTOSUGGEST_USE_ASYNC=1
+
+# -----------------------------------------------------------------------------
+# Load topic files
+# -----------------------------------------------------------------------------
+for topic_file in $ZSH/custom/topics/*.zsh(N); do
+    source "$topic_file"
+done
+
+# Load templated topic files
+for topic_file in $ZSH/custom/topics/*.zsh.tmpl(N); do
+    source "$topic_file"
+done
+
+# -----------------------------------------------------------------------------
+# Core aliases (non-topic)
+# -----------------------------------------------------------------------------
+alias cat="bat"
+alias ll='ls -lah'
+
+# Settings
+alias gitcfg="$EDITOR ~/.gitconfig"
+alias zshcfg="$EDITOR ~/.zshrc"
+
+# Navigation
+alias ..='cd ..'
+alias ...='cd ../..'
+
+# Utilities
+alias reload="clear && source ~/.zshrc"
+alias restart="clear && exec zsh"
+
+# -----------------------------------------------------------------------------
+# Integrations
+# -----------------------------------------------------------------------------
+
+# broot
+{{- if .is_macos }}
+if [[ -f "$HOME/.config/broot/launcher/bash/br" ]]; then
+    source "$HOME/.config/broot/launcher/bash/br"
+fi
+{{- else if .is_linux }}
+if [[ -f "$HOME/.config/broot/launcher/bash/br" ]]; then
+    source "$HOME/.config/broot/launcher/bash/br"
+fi
+{{- end }}
+
+# fzf
+if command -v fzf &> /dev/null; then
+{{- if .is_macos }}
+    [[ -f "{{ .homebrew_prefix }}/opt/fzf/shell/key-bindings.zsh" ]] && source "{{ .homebrew_prefix }}/opt/fzf/shell/key-bindings.zsh"
+    [[ -f "{{ .homebrew_prefix }}/opt/fzf/shell/completion.zsh" ]] && source "{{ .homebrew_prefix }}/opt/fzf/shell/completion.zsh"
+{{- else if .is_linux }}
+    [[ -f "/usr/share/doc/fzf/examples/key-bindings.zsh" ]] && source "/usr/share/doc/fzf/examples/key-bindings.zsh"
+    [[ -f "/usr/share/doc/fzf/examples/completion.zsh" ]] && source "/usr/share/doc/fzf/examples/completion.zsh"
+{{- end }}
+    # Fallback to built-in
+    source <(fzf --zsh 2>/dev/null) || true
+fi
+
+# Starship prompt
+export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
+if command -v starship &> /dev/null; then
+    eval "$(starship init zsh)"
+fi
+
+# fnm (Fast Node Manager)
+if command -v fnm &> /dev/null; then
+    eval "$(fnm env --use-on-cd --shell zsh)"
+fi
+
+# zoxide (smart cd)
+if command -v zoxide &> /dev/null; then
+    eval "$(zoxide init zsh)"
+fi
+
+# direnv
+if command -v direnv &> /dev/null; then
+    eval "$(direnv hook zsh)"
+fi
+
+# Docker CLI completions
+fpath=($HOME/.docker/completions $fpath)
+
+# -----------------------------------------------------------------------------
+# Completions
+# -----------------------------------------------------------------------------
+autoload -Uz compinit
+compinit
+
+# -----------------------------------------------------------------------------
+# Fastfetch on login
+# -----------------------------------------------------------------------------
+if [[ -o login ]] && command -v fastfetch &> /dev/null; then
+    fastfetch
+fi
+
+# -----------------------------------------------------------------------------
+# Local overrides (machine-specific)
+# -----------------------------------------------------------------------------
+if [[ -f ~/.zshrc.local ]]; then
+    source ~/.zshrc.local
+fi
+
+clear

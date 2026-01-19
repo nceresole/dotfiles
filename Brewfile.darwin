@@ -1,0 +1,71 @@
+# =============================================================================
+# Brewfile.darwin - macOS-specific packages
+# Install: brew bundle --file=Brewfile.darwin
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# macOS-specific CLI tools
+# -----------------------------------------------------------------------------
+brew "mas"           # Mac App Store CLI
+brew "trash"         # Move files to trash
+brew "duti"          # Set default apps
+
+# -----------------------------------------------------------------------------
+# Casks - GUI Applications
+# -----------------------------------------------------------------------------
+cask "iterm2"                    # Terminal emulator
+cask "visual-studio-code"        # Code editor
+cask "raycast"                   # Spotlight replacement
+cask "rectangle"                 # Window management
+cask "alt-tab"                   # Better alt-tab
+cask "1password"                 # Password manager
+cask "arc"                       # Browser
+cask "discord"                   # Chat
+cask "notion"                    # Notes
+cask "obsidian"                  # Knowledge base
+
+# Development
+cask "docker"                    # Containers
+cask "postman"                   # API testing
+cask "tableplus"                 # Database GUI
+
+# Utilities
+cask "appcleaner"                # App uninstaller
+cask "the-unarchiver"            # Archive utility
+cask "monitorcontrol"            # External display brightness
+cask "stats"                     # System monitor menu bar
+
+# Quick Look Plugins
+cask "qlcolorcode"               # Syntax highlighting
+cask "qlstephen"                 # Plain text files
+cask "qlmarkdown"                # Markdown preview
+cask "quicklook-json"            # JSON preview
+cask "qlprettypatch"             # Patch files
+
+# -----------------------------------------------------------------------------
+# Fonts
+# -----------------------------------------------------------------------------
+cask "font-jetbrains-mono-nerd-font"
+cask "font-fira-code-nerd-font"
+cask "font-hack-nerd-font"
+cask "font-meslo-lg-nerd-font"
+
+# -----------------------------------------------------------------------------
+# Mac App Store Apps (requires mas)
+# -----------------------------------------------------------------------------
+# mas "Xcode", id: 497799835
+# mas "Magnet", id: 441258766
+# mas "Bear", id: 1091189122
+# mas "Slack", id: 803453959
+
+# -----------------------------------------------------------------------------
+# Optional (uncomment if needed)
+# -----------------------------------------------------------------------------
+# cask "figma"                   # Design
+# cask "sketch"                  # Design
+# cask "firefox"                 # Browser
+# cask "brave-browser"           # Browser
+# cask "spotify"                 # Music
+# cask "zoom"                    # Video calls
+# cask "vlc"                     # Media player
+# cask "handbrake"               # Video transcoding

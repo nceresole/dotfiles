@@ -1,0 +1,51 @@
+# chezmoi configuration
+# This file is a template that will prompt for values on first run
+
+{{- $name := promptStringOnce . "name" "Your full name" "Nicolas Ceresole" -}}
+{{- $email := promptStringOnce . "email" "Your email address" "nceresole.dev@gmail.com" -}}
+
+{{- $osid := .chezmoi.os -}}
+{{- if hasKey .chezmoi.osRelease "id" -}}
+{{-   $osid = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
+{{- end -}}
+
+{{- $is_wsl := false -}}
+{{- if and (eq .chezmoi.os "linux") (contains "microsoft" (lower (output "uname" "-r"))) -}}
+{{-   $is_wsl = true -}}
+{{- end -}}
+
+{{- $is_macos := eq .chezmoi.os "darwin" -}}
+{{- $is_linux := eq .chezmoi.os "linux" -}}
+
+{{- $homebrew_prefix := "" -}}
+{{- if $is_macos -}}
+{{-   if stat "/opt/homebrew/bin/brew" -}}
+{{-     $homebrew_prefix = "/opt/homebrew" -}}
+{{-   else if stat "/usr/local/bin/brew" -}}
+{{-     $homebrew_prefix = "/usr/local" -}}
+{{-   end -}}
+{{- else if $is_linux -}}
+{{-   if stat "/home/linuxbrew/.linuxbrew/bin/brew" -}}
+{{-     $homebrew_prefix = "/home/linuxbrew/.linuxbrew" -}}
+{{-   end -}}
+{{- end -}}
+
+[data]
+    name = {{ $name | quote }}
+    email = {{ $email | quote }}
+
+    # Platform detection
+    is_macos = {{ $is_macos }}
+    is_linux = {{ $is_linux }}
+    is_wsl = {{ $is_wsl }}
+    osid = {{ $osid | quote }}
+
+    # Homebrew
+    homebrew_prefix = {{ $homebrew_prefix | quote }}
+
+[edit]
+    command = "nano"
+
+[merge]
+    command = "nvim"
+    args = ["-d", "{{ "{{" }} .Destination {{ "}}" }}", "{{ "{{" }} .Source {{ "}}" }}", "{{ "{{" }} .Target {{ "}}" }}"]

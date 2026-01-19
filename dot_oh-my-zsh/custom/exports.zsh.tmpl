@@ -1,0 +1,65 @@
+# =============================================================================
+# Environment Variables & Exports
+# Managed by chezmoi
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Editor preferences
+# -----------------------------------------------------------------------------
+export EDITOR='nano'
+export VISUAL='nano'
+# export EDITOR='code --wait'  # VS Code
+# export EDITOR='nvim'         # Neovim
+
+# -----------------------------------------------------------------------------
+# Locales
+# -----------------------------------------------------------------------------
+export LANG='en_US.UTF-8'
+export LC_ALL='en_US.UTF-8'
+
+# -----------------------------------------------------------------------------
+# History configuration
+# -----------------------------------------------------------------------------
+export HISTSIZE=10000
+export SAVEHIST=20000
+export HISTFILE=~/.zsh_history
+export HIST_STAMPS="yyyy-mm-dd"
+
+# History options
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+setopt SHARE_HISTORY
+setopt HIST_REDUCE_BLANKS
+
+# -----------------------------------------------------------------------------
+# Homebrew
+# -----------------------------------------------------------------------------
+{{- if ne .homebrew_prefix "" }}
+export HOMEBREW_NO_ANALYTICS=1
+export HOMEBREW_NO_AUTO_UPDATE=1
+{{- end }}
+
+# -----------------------------------------------------------------------------
+# Application-specific
+# -----------------------------------------------------------------------------
+
+# Claude Code
+export DISABLE_AUTOUPDATER=1
+
+# uv configuration
+# export UV_CACHE_DIR=$HOME/.cache/uv
+
+# -----------------------------------------------------------------------------
+# API Keys & Secrets
+# -----------------------------------------------------------------------------
+# NOTE: For security, use .env files per project or a password manager
+# Never commit secrets to version control!
+#
+# Example (source from ~/.secrets or use 1Password CLI):
+# export OPENAI_API_KEY='sk-...'
+# export DATABASE_URL='postgresql://...'
+
+# Load secrets from separate file if it exists
+if [[ -f ~/.secrets ]]; then
+    source ~/.secrets
+fi

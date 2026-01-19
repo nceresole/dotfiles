@@ -1,0 +1,26 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+# Apply macOS system preferences
+# This runs once after dotfiles are applied
+
+set -euo pipefail
+
+# Only prompt if running interactively
+if [[ -t 0 ]]; then
+    read -p "Apply macOS system preferences? [y/N] " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        echo "Skipping macOS defaults"
+        exit 0
+    fi
+fi
+
+SCRIPT_PATH="{{ .chezmoi.sourceDir }}/scripts/macos-defaults.sh"
+
+if [[ -f "$SCRIPT_PATH" ]]; then
+    echo "Applying macOS defaults..."
+    bash "$SCRIPT_PATH"
+else
+    echo "macOS defaults script not found at $SCRIPT_PATH"
+fi
+{{ end -}}

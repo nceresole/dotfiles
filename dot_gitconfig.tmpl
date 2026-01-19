@@ -1,0 +1,94 @@
+# =============================================================================
+# Git Configuration (managed by chezmoi)
+# =============================================================================
+
+[user]
+    name = {{ .name }}
+    email = {{ .email }}
+
+[init]
+    defaultBranch = main
+
+[core]
+    autocrlf = input
+    pager = delta
+    excludesfile = ~/.gitignore_global
+
+[pull]
+    rebase = false
+
+[push]
+    default = current
+    autoSetupRemote = true
+
+[fetch]
+    prune = true
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default
+
+# -----------------------------------------------------------------------------
+# Credential helper (platform-specific)
+# -----------------------------------------------------------------------------
+{{- if .is_macos }}
+[credential]
+    helper = osxkeychain
+{{- else if .is_wsl }}
+[credential]
+    helper = /mnt/c/Program\\ Files/Git/mingw64/bin/git-credential-manager.exe
+{{- else if .is_linux }}
+[credential]
+    helper = cache --timeout=3600
+{{- end }}
+
+# -----------------------------------------------------------------------------
+# Delta (modern diff pager)
+# -----------------------------------------------------------------------------
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true
+    side-by-side = true
+    line-numbers = true
+    syntax-theme = Dracula
+
+# -----------------------------------------------------------------------------
+# Aliases
+# -----------------------------------------------------------------------------
+[alias]
+    # Status & info
+    st = status
+    ss = status -s
+    last = log -1 HEAD
+
+    # Branching
+    co = checkout
+    br = branch
+    bra = branch -a
+
+    # Commits
+    ci = commit
+    amend = commit --amend --no-edit
+    wip = !git add -A && git commit -m 'WIP'
+
+    # Diffs
+    df = diff
+    dfs = diff --staged
+
+    # Undo
+    unstage = reset HEAD --
+    undo = reset HEAD~1 --mixed
+
+    # Log (pretty)
+    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    lga = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all
+
+# -----------------------------------------------------------------------------
+# Include machine-specific config (optional)
+# -----------------------------------------------------------------------------
+[include]
+    path = ~/.gitconfig.local

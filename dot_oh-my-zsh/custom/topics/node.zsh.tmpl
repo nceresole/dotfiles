@@ -1,0 +1,71 @@
+# =============================================================================
+# Node.js Configuration
+# Topic: node.zsh
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# fnm (Fast Node Manager) - platform-specific paths
+# -----------------------------------------------------------------------------
+{{- if .is_macos }}
+if [ -d "$HOME/Library/Application Support/fnm" ]; then
+    export PATH="$HOME/Library/Application Support/fnm:$PATH"
+fi
+{{- else if .is_linux }}
+if [ -d "$HOME/.local/share/fnm" ]; then
+    export PATH="$HOME/.local/share/fnm:$PATH"
+fi
+{{- end }}
+
+# Initialize fnm if available
+if command -v fnm &> /dev/null; then
+    eval "$(fnm env --use-on-cd)"
+fi
+
+# -----------------------------------------------------------------------------
+# Node/npm Aliases
+# -----------------------------------------------------------------------------
+alias ni='npm install'
+alias nid='npm install --save-dev'
+alias nig='npm install -g'
+alias nr='npm run'
+alias nrs='npm run start'
+alias nrd='npm run dev'
+alias nrb='npm run build'
+alias nrt='npm run test'
+
+# pnpm aliases
+if command -v pnpm &>/dev/null; then
+    alias pni='pnpm install'
+    alias pnr='pnpm run'
+    alias pnx='pnpm dlx'
+fi
+
+# bun aliases
+if command -v bun &>/dev/null; then
+    alias bi='bun install'
+    alias br='bun run'
+    alias bx='bunx'
+fi
+
+# -----------------------------------------------------------------------------
+# Node Functions
+# -----------------------------------------------------------------------------
+
+# Create new Node.js project
+newnode() {
+    if [ -z "$1" ]; then
+        echo "Usage: newnode <project-name>"
+        return 1
+    fi
+
+    mkdir -p "$1"
+    cd "$1"
+    npm init -y
+    echo "Created Node.js project: $1"
+}
+
+# Upgrade all npm packages
+ncu() {
+    npx npm-check-updates -u
+    npm install
+}
