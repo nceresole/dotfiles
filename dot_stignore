@@ -1,0 +1,68 @@
+// ------------------------------------------------------------
+// 🍎 macOS Garbage
+// ------------------------------------------------------------
+// Prevents syncing of Finder metadata and custom folder icons
+(?d).DS_Store
+(?d).AppleDouble
+(?d).LSOverride
+(?d)._*
+(?d).DocumentRevisions-V100
+(?d).fseventsd
+(?d).Spotlight-V100
+(?d).TemporaryItems
+(?d).Trashes
+(?d).VolumeIcon.icns
+(?d).com.apple.timemachine.donotpresent
+(?d).localized
+
+// ------------------------------------------------------------
+// 🪟 Windows Garbage
+// ------------------------------------------------------------
+// Prevents syncing of Thumbnail caches and folder view settings
+(?d)Thumbs.db
+(?d)ehthumbs.db
+(?d)desktop.ini
+(?d)$RECYCLE.BIN
+(?d)System Volume Information
+
+// ------------------------------------------------------------
+// 🐧 Linux Garbage
+// ------------------------------------------------------------
+// Prevents syncing of KDE/Gnome trash and temp files
+(?d).Trash-*
+(?d).fuse_hidden*
+(?d).directory
+
+// ------------------------------------------------------------
+// 🛠️ Development & General Clutter
+// ------------------------------------------------------------
+// Ignore version control internals (if you use Git inside these folders)
+// It is usually safer to sync the Repo but IGNORE the .git folder
+// to prevent "index.lock" conflicts.
+.git/
+
+// Ignore common build artifacts and dependencies
+node_modules/
+vendor/
+dist/
+build/
+bin/
+obj/
+__pycache__/
+*.pyc
+.venv/
+.env
+
+// ------------------------------------------------------------
+// ⚡ Temporary & Conflict Files
+// ------------------------------------------------------------
+// Ignore partial downloads and temp files
+*.tmp
+*.bak
+*.swp
+*~
+*.part
+*.crdownload
+
+// Ignore Syncthing's own conflict files (Optional: keep if you want to see them)
+// *.sync-conflict-*

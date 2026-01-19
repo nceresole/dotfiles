@@ -69,3 +69,192 @@ ncu() {
     npx npm-check-updates -u
     npm install
 }
+
+# Create TypeScript project with common setup
+newts() {
+    if [ -z "$1" ]; then
+        echo "Usage: newts <project-name>"
+        return 1
+    fi
+
+    mkdir -p "$1"
+    cd "$1"
+
+    # Initialize package.json
+    npm init -y
+
+    # Install TypeScript and common dev dependencies
+    npm install -D typescript @types/node ts-node nodemon
+
+    # Create tsconfig.json
+    cat > tsconfig.json << 'EOF'
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "commonjs",
+    "lib": ["ES2022"],
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
+EOF
+
+    # Create directory structure
+    mkdir -p src
+
+    # Create entry point
+    cat > src/index.ts << 'EOF'
+console.log('Hello, TypeScript!')
+EOF
+
+    # Update package.json scripts
+    npm pkg set scripts.build="tsc"
+    npm pkg set scripts.start="node dist/index.js"
+    npm pkg set scripts.dev="nodemon --exec ts-node src/index.ts"
+
+    # Create .gitignore
+    cat > .gitignore << 'EOF'
+node_modules/
+dist/
+*.log
+.env
+.DS_Store
+EOF
+
+    echo "Created TypeScript project: $1"
+    echo "Run 'npm run dev' to start development"
+}
+
+# Create Next.js project
+newnext() {
+    if [ -z "$1" ]; then
+        echo "Usage: newnext <project-name>"
+        return 1
+    fi
+
+    npx create-next-app@latest "$1" --typescript --tailwind --eslint --app --src-dir --import-alias "@/*"
+    cd "$1"
+    echo "Created Next.js project: $1"
+    echo "Run 'npm run dev' to start development"
+}
+
+# Create Vite + React + TypeScript project
+newvite() {
+    if [ -z "$1" ]; then
+        echo "Usage: newvite <project-name>"
+        return 1
+    fi
+
+    npm create vite@latest "$1" -- --template react-ts
+    cd "$1"
+    npm install
+    echo "Created Vite + React + TypeScript project: $1"
+    echo "Run 'npm run dev' to start development"
+}
+
+# Create Express + TypeScript API
+newexpress() {
+    if [ -z "$1" ]; then
+        echo "Usage: newexpress <project-name>"
+        return 1
+    fi
+
+    mkdir -p "$1"
+    cd "$1"
+
+    # Initialize
+    npm init -y
+
+    # Install dependencies
+    npm install express cors dotenv
+    npm install -D typescript @types/node @types/express @types/cors ts-node nodemon
+
+    # Create tsconfig
+    cat > tsconfig.json << 'EOF'
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "commonjs",
+    "lib": ["ES2022"],
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
+EOF
+
+    # Create directory structure
+    mkdir -p src/routes src/middleware
+
+    # Create main app
+    cat > src/index.ts << 'EOF'
+import express from 'express'
+import cors from 'cors'
+import dotenv from 'dotenv'
+
+dotenv.config()
+
+const app = express()
+const PORT = process.env.PORT || 3000
+
+app.use(cors())
+app.use(express.json())
+
+app.get('/', (req, res) => {
+  res.json({ message: 'Hello, Express!' })
+})
+
+app.get('/health', (req, res) => {
+  res.json({ status: 'healthy' })
+})
+
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`)
+})
+EOF
+
+    # Create .env
+    cat > .env << 'EOF'
+PORT=3000
+NODE_ENV=development
+EOF
+
+    # Create .gitignore
+    cat > .gitignore << 'EOF'
+node_modules/
+dist/
+*.log
+.env
+.DS_Store
+EOF
+
+    # Update scripts
+    npm pkg set scripts.build="tsc"
+    npm pkg set scripts.start="node dist/index.js"
+    npm pkg set scripts.dev="nodemon --exec ts-node src/index.ts"
+
+    echo "Created Express + TypeScript project: $1"
+    echo "Run 'npm run dev' to start development"
+}
+
+# Clean node_modules and reinstall
+nclean() {
+    rm -rf node_modules package-lock.json
+    npm install
+    echo "Cleaned and reinstalled dependencies"
+}
