@@ -4,266 +4,71 @@ Cross-platform dotfiles managed with [chezmoi](https://chezmoi.io).
 
 Supports **macOS**, **Linux**, and **WSL** with automatic platform detection.
 
-## Documentation
-
-| Document | Description |
-|----------|-------------|
-| [INSTALLATION.md](docs/INSTALLATION.md) | Step-by-step setup for WSL, macOS, Linux |
-| [CHEZMOI.md](docs/CHEZMOI.md) | Complete chezmoi guide and command reference |
-| [STRUCTURE.md](docs/STRUCTURE.md) | Directory structure and file organization |
-| [CUSTOMIZATION.md](docs/CUSTOMIZATION.md) | How to customize for your needs |
-| [TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) | Common issues and solutions |
-
 ## Quick Start
 
 ```bash
 # One-liner installation
-sh -c "$(curl -fsLS https://raw.githubusercontent.com/nceresole/dotfiles/main/.local/share/chezmoi/scripts/bootstrap.sh)"
+sh -c "$(curl -fsLS https://raw.githubusercontent.com/nceresole/dotfiles/main/scripts/bootstrap.sh)"
 ```
 
 Or with chezmoi directly:
 
 ```bash
-# Install chezmoi and apply dotfiles
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply nceresole
 ```
 
-## Manual Installation
+## What's Included
 
-1. **Install chezmoi**
-   ```bash
-   # macOS/Linux with Homebrew
-   brew install chezmoi
+### Shell (zsh + Oh My Zsh)
+- Topic-based configuration (git, python, node, docker, navigation)
+- Platform-specific settings for macOS/Linux/WSL
+- Project scaffolding functions (`newpy`, `newfastapi`, `newts`, `newnext`, `newvite`, `newexpress`)
 
-   # Or standalone
-   sh -c "$(curl -fsLS get.chezmoi.io)"
-   ```
+### CLI Tools
+- **Modern replacements**: bat, eza, zoxide, ripgrep, fd, delta
+- **Shell enhancements**: Starship prompt, fzf, direnv
+- **Development**: uv (Python), fnm (Node), gh (GitHub CLI)
+- **Utilities**: tmux, broot, btop
 
-2. **Initialize dotfiles**
-   ```bash
-   chezmoi init https://github.com/nceresole/dotfiles.git
-   ```
+### Configurations
+- Git with platform-specific credential helpers
+- SSH with macOS Keychain integration
+- VS Code settings and extensions
+- Starship prompt (Nord theme)
+- tmux (Ctrl-a prefix, vim keybindings)
 
-3. **Preview changes**
-   ```bash
-   chezmoi diff
-   ```
+## Documentation
 
-4. **Apply dotfiles**
-   ```bash
-   chezmoi apply
-   ```
-
-## Directory Structure
-
-```
-~/.local/share/chezmoi/
-├── .chezmoi.toml.tmpl          # Config with platform detection
-├── .chezmoiexternal.toml       # Oh My Zsh + plugins
-├── .chezmoiscripts/            # Run scripts
-│   ├── run_once_before_00-install-packages.sh.tmpl
-│   └── run_once_after_darwin-defaults.sh.tmpl
-│
-├── dot_zshrc.tmpl              # Main shell config
-├── dot_zprofile.tmpl           # Login shell
-├── dot_gitconfig.tmpl          # Git config
-├── dot_hushlogin               # Suppress login message
-│
-├── private_dot_ssh/config.tmpl # SSH config
-│
-├── dot_tmux.conf               # Terminal multiplexer
-├── dot_stignore                # Syncthing ignore patterns
-│
-├── dot_config/
-│   ├── starship/               # Prompt theming
-│   ├── broot/                  # File manager
-│   ├── btop/                   # System monitor
-│   ├── gh/                     # GitHub CLI
-│   ├── iterm2/                 # iTerm2 profile (macOS)
-│   └── Code/User/              # VS Code settings
-│
-├── dot_oh-my-zsh/custom/
-│   ├── topics/                 # Topic-based organization
-│   │   ├── git.zsh             # Git aliases + functions
-│   │   ├── python.zsh          # Python/uv/FastAPI
-│   │   ├── node.zsh.tmpl       # Node.js (platform-specific)
-│   │   ├── docker.zsh          # Docker aliases
-│   │   ├── navigation.zsh      # File management
-│   │   └── platform.zsh.tmpl   # macOS/Linux/WSL specifics
-│   ├── exports.zsh.tmpl
-│   └── paths.zsh.tmpl
-│
-├── Brewfile                    # Cross-platform packages
-├── Brewfile.darwin             # macOS casks & fonts
-├── Brewfile.linux              # Linux-specific
-│
-└── scripts/
-    ├── bootstrap.sh            # One-command installer
-    └── macos-defaults.sh       # macOS system preferences
-```
+| Document | Description |
+|----------|-------------|
+| [Installation](docs/INSTALLATION.md) | Step-by-step setup for WSL, macOS, Linux |
+| [Forking Guide](docs/FORKING.md) | How to fork and personalize this repo |
+| [Structure](docs/STRUCTURE.md) | Directory layout and file organization |
+| [Customization](docs/CUSTOMIZATION.md) | Adding tools, creating topics, managing secrets |
+| [Chezmoi Guide](docs/CHEZMOI.md) | Chezmoi concepts and command reference |
+| [Troubleshooting](docs/TROUBLESHOOTING.md) | Common issues and solutions |
 
 ## Common Commands
 
 ```bash
-# View current state
-chezmoi status
-
-# Preview changes
-chezmoi diff
-
-# Apply changes
-chezmoi apply
-
-# Edit a managed file
-chezmoi edit ~/.zshrc
-
-# Add a new file to management
-chezmoi add ~/.config/app/config
-
-# Add an encrypted file
-chezmoi add --encrypt ~/.ssh/id_ed25519_github
-
-# Pull and apply latest changes
-chezmoi update
-
-# Re-run templates (after changing data)
-chezmoi init
-
-# See what chezmoi would do
-chezmoi apply --dry-run --verbose
+chezmoi status              # View current state
+chezmoi diff                # Preview changes
+chezmoi apply               # Apply changes
+chezmoi edit ~/.zshrc       # Edit a managed file
+chezmoi add ~/.config/tool  # Add new file to management
+chezmoi update              # Pull and apply latest
 ```
 
-## Customization
+## Local Overrides
 
-### Machine-Specific Settings
-
-Create `~/.zshrc.local` for machine-specific configurations:
+Machine-specific settings go in `.local` files (not tracked by git):
 
 ```bash
-# ~/.zshrc.local
-export WORK_PROJECT_DIR="~/work/projects"
-alias myproject="cd $WORK_PROJECT_DIR/myapp"
+~/.zshrc.local          # Shell customizations
+~/.gitconfig.local      # Git settings (e.g., work email)
+~/.ssh/config.local     # SSH hosts
+~/.secrets              # API keys (source in .zshrc)
 ```
-
-### Git Identity
-
-The git config prompts for your name and email on first run. To update:
-
-```bash
-chezmoi edit-config
-# Edit the [data] section, then:
-chezmoi apply
-```
-
-### Secrets Management
-
-For sensitive data, use age encryption:
-
-```bash
-# Generate encryption key (one-time)
-age-keygen -o ~/.config/chezmoi/key.txt
-
-# Add encrypted file
-chezmoi add --encrypt ~/.secrets
-
-# The key is needed to decrypt on other machines
-```
-
-## Topic Files
-
-Shell configuration is organized by topic for better maintainability:
-
-| Topic | Contents |
-|-------|----------|
-| `git.zsh` | Git aliases, qcommit, qpush functions |
-| `python.zsh` | Python/uv aliases, newpy, newfastapi |
-| `node.zsh.tmpl` | fnm setup, npm/pnpm/bun aliases, newts, newnext, newvite, newexpress |
-| `docker.zsh` | Docker/compose aliases |
-| `navigation.zsh` | eza/bat/zoxide, file utilities |
-| `platform.zsh.tmpl` | macOS/Linux/WSL-specific settings |
-
-## Included Tools
-
-### CLI Replacements
-- **bat** - Better `cat` with syntax highlighting
-- **eza** - Better `ls` with icons and git status
-- **zoxide** - Smarter `cd` that learns your habits
-- **delta** - Better `git diff` viewer
-- **ripgrep** - Faster `grep`
-- **fd** - Faster `find`
-
-### Shell
-- **Starship** - Cross-shell prompt
-- **fzf** - Fuzzy finder
-- **direnv** - Per-directory environment
-- **fnm** - Fast Node Manager
-
-### Development
-- **uv** - Fast Python package manager
-- **gh** - GitHub CLI
-- **broot** - Terminal file manager
-- **tmux** - Terminal multiplexer (prefix: Ctrl-a, vim keybindings)
-
-## Troubleshooting
-
-### chezmoi diff shows unexpected changes
-
-```bash
-# Verify template output
-chezmoi execute-template < ~/.local/share/chezmoi/dot_zshrc.tmpl
-
-# Check data values
-chezmoi data
-```
-
-### Homebrew packages not installing
-
-```bash
-# Run package installation manually
-~/.local/share/chezmoi/.chezmoiscripts/run_once_before_00-install-packages.sh.tmpl
-```
-
-### Oh My Zsh plugins missing
-
-```bash
-# Force external dependency update
-chezmoi update --refresh-externals
-```
-
-### Platform detection issues
-
-```bash
-# Check detected values
-chezmoi data | grep -E "is_macos|is_linux|is_wsl"
-```
-
-## Updating
-
-```bash
-# Pull latest and apply
-chezmoi update
-
-# Or step by step
-cd ~/.local/share/chezmoi
-git pull
-chezmoi apply
-```
-
-## Contributing
-
-1. Make changes to files in `~/.local/share/chezmoi/`
-2. Test with `chezmoi diff` and `chezmoi apply`
-3. Commit and push
-
-## Documentation
-
-For detailed guides, see the `docs/` folder:
-
-- **[INSTALLATION.md](docs/INSTALLATION.md)** - Step-by-step setup for WSL, macOS, and Linux
-- **[CHEZMOI.md](docs/CHEZMOI.md)** - How chezmoi works, concepts, and full command reference
-- **[STRUCTURE.md](docs/STRUCTURE.md)** - Explanation of every file and directory
-- **[CUSTOMIZATION.md](docs/CUSTOMIZATION.md)** - How to add tools, create topics, manage secrets
-- **[TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)** - Solutions to common problems
 
 ## License
 
