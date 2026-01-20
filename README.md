@@ -8,6 +8,7 @@ Supports **macOS**, **Linux**, and **WSL** with automatic platform detection.
 
 | Document | Description |
 |----------|-------------|
+| [INSTALLATION.md](docs/INSTALLATION.md) | Step-by-step setup for WSL, macOS, Linux |
 | [CHEZMOI.md](docs/CHEZMOI.md) | Complete chezmoi guide and command reference |
 | [STRUCTURE.md](docs/STRUCTURE.md) | Directory structure and file organization |
 | [CUSTOMIZATION.md](docs/CUSTOMIZATION.md) | How to customize for your needs |
@@ -258,6 +259,7 @@ chezmoi apply
 
 For detailed guides, see the `docs/` folder:
 
+- **[INSTALLATION.md](docs/INSTALLATION.md)** - Step-by-step setup for WSL, macOS, and Linux
 - **[CHEZMOI.md](docs/CHEZMOI.md)** - How chezmoi works, concepts, and full command reference
 - **[STRUCTURE.md](docs/STRUCTURE.md)** - Explanation of every file and directory
 - **[CUSTOMIZATION.md](docs/CUSTOMIZATION.md)** - How to add tools, create topics, manage secrets
